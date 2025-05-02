@@ -30,21 +30,21 @@ const StageRecordsIndex: React.FC<Props> = ({ stageRecords }) => {
     <AppLayout>
       <div className="container mx-auto py-8">
         <h1 className="text-2xl font-bold mb-4">Stage Records</h1>
-        <table className="min-w-full bg-white border">
+        <table className="min-w-full bg-white border dark:bg-gray-900 dark:text-white">
           <thead>
             <tr>
-              <th className="px-4 py-2 border">ID</th>
-              <th className="px-4 py-2 border">Batch</th>
-              <th className="px-4 py-2 border">Farm</th>
-              <th className="px-4 py-2 border">Stage</th>
-              <th className="px-4 py-2 border">Notes</th>
-              <th className="px-4 py-2 border">Created At</th>
-              <th className="px-4 py-2 border">Completion Date</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">ID</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Batch</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Farm</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Stage</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Notes</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Created At</th>
+              <th className="px-4 py-2 border dark:bg-gray-800 dark:text-white">Completion Date</th>
             </tr>
           </thead>
           <tbody>
             {stageRecords.map((record) => (
-              <tr key={record.id}>
+              <tr key={record.id} className="dark:border-gray-700">
                 <td className="px-4 py-2 border">{record.id}</td>
                 <td className="px-4 py-2 border">{record.batch?.id}</td>
                 <td className="px-4 py-2 border">{record.batch?.farm?.name}</td>

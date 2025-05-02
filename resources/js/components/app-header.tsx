@@ -11,9 +11,10 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, Sun, Moon } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { useAppearance } from '@/hooks/use-appearance';
 
 const mainNavItems: NavItem[] = [
     {
@@ -46,6 +47,14 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const { appearance, updateAppearance } = useAppearance();
+
+    // Only allow toggling between 'light' and 'dark'
+    const isDark = appearance === 'dark';
+    const handleThemeToggle = () => {
+        updateAppearance(isDark ? 'light' : 'dark');
+    };
+
     return (
         <>
             <div className="border-sidebar-border/80 border-b">
@@ -125,6 +134,20 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
+                        {/* Theme Toggle Button */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Toggle theme"
+                            className="group h-9 w-9 cursor-pointer"
+                            onClick={handleThemeToggle}
+                        >
+                            {isDark ? (
+                                <Sun className="size-5 text-yellow-400 transition-all duration-200 group-hover:scale-110" />
+                            ) : (
+                                <Moon className="size-5 text-neutral-700 transition-all duration-200 group-hover:scale-110" />
+                            )}
+                        </Button>
                         <div className="relative flex items-center space-x-1">
                             <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
