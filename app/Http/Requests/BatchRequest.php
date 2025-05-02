@@ -26,6 +26,11 @@ class BatchRequest extends FormRequest
             'batch_number' => 'required|string|max:255',
             'start_date'   => 'required|date',
             'end_date'     => 'nullable|date',
+            'wool_type'    => 'nullable|string|max:255',
+            'weight_kg'    => 'nullable|numeric',
+            'status'       => 'nullable|string|max:255',
+            'arrival_date' => 'nullable|date',
+            'notes'        => 'nullable|string',
         ];
     }
 }

@@ -25,7 +25,7 @@ interface StageRecord {
   batch_id: number;
   stage: string;
   notes: string;
-  completed_at: string | null;
+  completion_date: string | null;
   batch: Batch;
 }
 
@@ -37,7 +37,7 @@ const EditStageRecord = ({ stageRecord }: Props) => {
   const { data, setData, put, processing, errors } = useForm({
     stage: stageRecord.stage,
     notes: stageRecord.notes || "",
-    completed_at: stageRecord.completed_at || "",
+    completion_date: stageRecord.completion_date || "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -108,20 +108,20 @@ const EditStageRecord = ({ stageRecord }: Props) => {
             </div>
 
             <div>
-              <Label htmlFor="completed_at">Completion Date/Time</Label>
+              <Label htmlFor="completion_date">Completion Date/Time</Label>
               <Input
-                id="completed_at"
+                id="completion_date"
                 type="datetime-local"
-                value={data.completed_at}
+                value={data.completion_date}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData("completed_at", e.target.value)
+                  setData("completion_date", e.target.value)
                 }
               />
               <p className="mt-1 text-sm text-gray-500">
                 Leave empty if stage is not completed
               </p>
-              {errors.completed_at && (
-                <p className="mt-1 text-sm text-red-500">{errors.completed_at}</p>
+              {errors.completion_date && (
+                <p className="mt-1 text-sm text-red-500">{errors.completion_date}</p>
               )}
             </div>
           </div>

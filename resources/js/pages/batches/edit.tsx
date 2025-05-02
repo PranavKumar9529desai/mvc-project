@@ -23,6 +23,9 @@ interface Farm {
 interface Batch {
   id: number;
   farm_id: number;
+  batch_number: string;
+  start_date: string;
+  end_date: string | null;
   wool_type: string;
   weight_kg: number;
   status: string;
@@ -37,11 +40,14 @@ interface Props extends SharedData {
 
 const EditBatch = ({ farms, batch }: Props) => {
   const { data, setData, put, processing, errors } = useForm({
-    farm_id: batch.farm_id.toString(),
-    wool_type: batch.wool_type,
-    weight_kg: batch.weight_kg.toString(),
-    status: batch.status,
-    arrival_date: batch.arrival_date,
+    farm_id: batch.farm_id?.toString() || "",
+    batch_number: batch.batch_number || "",
+    start_date: batch.start_date || "",
+    end_date: batch.end_date || "",
+    wool_type: batch.wool_type || "",
+    weight_kg: batch.weight_kg?.toString() || "",
+    status: batch.status || "",
+    arrival_date: batch.arrival_date || "",
     notes: batch.notes || "",
   });
 

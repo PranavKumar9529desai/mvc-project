@@ -6,6 +6,7 @@ use App\Models\StageRecord;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Batch;
+use App\Http\Requests\StageRecordRequest;
 
 class StageRecordController extends Controller
 {
@@ -22,11 +23,11 @@ class StageRecordController extends Controller
                 'stage',
                 'notes',
                 'created_at',
-                'completed_at'
+                'completion_date'
             ])
             ->latest()
             ->get();
-        return Inertia::render('StageRecords/Index', ['stageRecords' => $stageRecords]);
+        return Inertia::render('stage-records/index', ['stageRecords' => $stageRecords]);
     }
 
     /**
@@ -41,17 +42,11 @@ class StageRecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StageRecordRequest $request)
     {
-        $validated = $request->validate([
-            'batch_id' => 'required|exists:batches,id',
-            'stage' => 'required|string|in:cleaning,sorting,scouring,drying,quality_check,packaging',
-            'notes' => 'nullable|string',
-            'completed_at' => 'nullable|date',
-        ]);
-    
+        $validated = $request->validated();
         StageRecord::create($validated);
-    
+
         $batch = Batch::find($validated['batch_id']);
         return redirect()->route('batches.show', $batch)->with('success', 'Stage record created successfully.');
     }
@@ -75,22 +70,17 @@ class StageRecordController extends Controller
                     ->with('farm:id,name');
             }
         ]);
-        return Inertia::render('stage-records/edit', ['stageRecord' => $stageRecord]);
+        return Inertia::render('StageRecords/Edit', ['stageRecord' => $stageRecord]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, StageRecord $stageRecord)
+    public function update(StageRecordRequest $request, StageRecord $stageRecord)
     {
-        $validated = $request->validate([
-            'stage' => 'required|string|in:cleaning,sorting,scouring,drying,quality_check,packaging',
-            'notes' => 'nullable|string',
-            'completed_at' => 'nullable|date',
-        ]);
-    
+        $validated = $request->validated();
         $stageRecord->update($validated);
-    
+
         return redirect()->route('batches.show', $stageRecord->batch_id)->with('success', 'Stage record updated successfully.');
     }
 

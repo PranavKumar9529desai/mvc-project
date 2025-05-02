@@ -9,7 +9,7 @@ interface StageRecord {
   stage: string;
   notes: string | null;
   created_at: string;
-  completed_at: string | null;
+  completion_date: string | null;
   batch: {
     id: number;
     farm_id: number;
@@ -39,7 +39,7 @@ const StageRecordsIndex: React.FC<Props> = ({ stageRecords }) => {
               <th className="px-4 py-2 border">Stage</th>
               <th className="px-4 py-2 border">Notes</th>
               <th className="px-4 py-2 border">Created At</th>
-              <th className="px-4 py-2 border">Completed At</th>
+              <th className="px-4 py-2 border">Completion Date</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +51,7 @@ const StageRecordsIndex: React.FC<Props> = ({ stageRecords }) => {
                 <td className="px-4 py-2 border">{record.stage}</td>
                 <td className="px-4 py-2 border">{record.notes}</td>
                 <td className="px-4 py-2 border">{record.created_at}</td>
-                <td className="px-4 py-2 border">{record.completed_at}</td>
+                <td className="px-4 py-2 border">{record.completion_date}</td>
               </tr>
             ))}
           </tbody>

@@ -23,8 +23,9 @@ class StageRecordRequest extends FormRequest
     {
         return [
             'batch_id' => 'required|exists:batches,id',
-            'stage'    => 'required|string|max:255',
+            'stage'    => 'required|string|in:cleaning,sorting,scouring,drying,quality_check,packaging',
             'notes'    => 'nullable|string',
+            'completion_date' => 'nullable|date',
         ];
     }
 }

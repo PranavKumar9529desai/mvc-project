@@ -30,7 +30,7 @@ const CreateStageRecord = ({ batch, batch_id }: Props) => {
     batch_id: batch_id?.toString() || batch.id.toString(),
     stage: "cleaning",
     notes: "",
-    completed_at: "",
+    completion_date: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -95,20 +95,20 @@ const CreateStageRecord = ({ batch, batch_id }: Props) => {
             </div>
 
             <div>
-              <Label htmlFor="completed_at">Completion Date/Time</Label>
+              <Label htmlFor="completion_date">Completion Date/Time</Label>
               <Input
-                id="completed_at"
+                id="completion_date"
                 type="datetime-local"
-                value={data.completed_at}
+                value={data.completion_date}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData("completed_at", e.target.value)
+                  setData("completion_date", e.target.value)
                 }
               />
               <p className="mt-1 text-sm text-gray-500">
                 Leave empty if stage is not completed
               </p>
-              {errors.completed_at && (
-                <p className="mt-1 text-sm text-red-500">{errors.completed_at}</p>
+              {errors.completion_date && (
+                <p className="mt-1 text-sm text-red-500">{errors.completion_date}</p>
               )}
             </div>
           </div>
