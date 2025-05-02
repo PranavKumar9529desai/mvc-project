@@ -10,7 +10,17 @@ use App\Models\StageRecord;
 
 class Batch extends Model
 {
-    protected $fillable = ['farm_id', 'batch_number', 'start_date', 'end_date'];
+    protected $fillable = [
+        'farm_id',
+        'batch_number',
+        'start_date',
+        'end_date',
+        'wool_type',
+        'weight_kg',
+        'status',
+        'arrival_date',
+        'notes'
+    ];
 
     public function farm(): BelongsTo
     {

@@ -21,10 +21,9 @@ class BatchController extends Controller
             ->select([
                 'id',
                 'farm_id',
-                'wool_type',
-                'weight_kg',
-                'status',
-                'arrival_date'
+                'batch_number',
+                'start_date',
+                'end_date'
             ])
             ->latest()
             ->get();
@@ -46,16 +45,14 @@ class BatchController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'farm_id' => 'required|exists:farms,id',
-            'wool_type' => 'required|string|max:255',
-            'weight_kg' => 'required|numeric|min:0',
-            'status' => 'required|string|in:received,processing,completed,rejected',
-            'arrival_date' => 'required|date',
-            'notes' => 'nullable|string',
+            'farm_id'      => 'required|exists:farms,id',
+            'batch_number' => 'required|string|max:255',
+            'start_date'   => 'required|date',
+            'end_date'     => 'nullable|date',
         ]);
-    
+
         Batch::create($validated);
-    
+
         return redirect()->route('batches.index')->with('success', 'Batch created successfully.');
     }
 
@@ -96,12 +93,10 @@ class BatchController extends Controller
     public function update(Request $request, Batch $batch)
     {
         $validated = $request->validate([
-            'farm_id' => 'required|exists:farms,id',
-            'wool_type' => 'required|string|max:255',
-            'weight_kg' => 'required|numeric|min:0',
-            'status' => 'required|string|in:received,processing,completed,rejected',
-            'arrival_date' => 'required|date',
-            'notes' => 'nullable|string',
+            'farm_id'      => 'required|exists:farms,id',
+            'batch_number' => 'required|string|max:255',
+            'start_date'   => 'required|date',
+            'end_date'     => 'nullable|date',
         ]);
     
         $batch->update($validated);

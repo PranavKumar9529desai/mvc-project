@@ -32,10 +32,10 @@ class StageRecordController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $batch = Batch::findOrFail($request->batch_id);
-        return Inertia::render('stage-records/create', ['batch' => $request->batch]);
+        return Inertia::render('StageRecords/Create', ['batch' => $batch]);
     }
 
     /**

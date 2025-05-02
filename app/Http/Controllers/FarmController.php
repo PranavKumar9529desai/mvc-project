@@ -15,7 +15,6 @@ class FarmController extends Controller
     {
         $farms = Farm::query()
             ->withCount('batches')
-            ->withSum('batches', 'weight_kg')
             ->with(['batches' => function ($query) {
                 $query->select('id', 'farm_id', 'status')
                     ->where('status', '!=', 'completed');
