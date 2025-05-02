@@ -14,8 +14,21 @@ class BatchController extends Controller
      */
     public function index()
     {
-        $batches = Batch::with('farm')->get();
-        return Inertia::render('Batches/Index', ['batches' => $batches]);
+        $batches = Batch::query()
+            ->with(['farm:id,name', 'stageRecords' => function ($query) {
+                $query->latest()->limit(1);
+            }])
+            ->select([
+                'id',
+                'farm_id',
+                'wool_type',
+                'weight_kg',
+                'status',
+                'arrival_date'
+            ])
+            ->latest()
+            ->get();
+        return Inertia::render('batches/index', ['batches' => $batches]);
     }
 
     /**
@@ -23,8 +36,8 @@ class BatchController extends Controller
      */
     public function create()
     {
-        $farms = Farm::all();
-        return Inertia::render('Batches/Create', ['farms' => $farms]);
+        $farms = Farm::select(['id', 'name'])->orderBy('name')->get();
+        return Inertia::render('batches/create', ['farms' => $farms]);
     }
 
     /**
@@ -33,10 +46,12 @@ class BatchController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'farm_id'      => 'required|exists:farms,id',
-            'batch_number' => 'required|string|max:255',
-            'start_date'   => 'required|date',
-            'end_date'     => 'nullable|date',
+            'farm_id' => 'required|exists:farms,id',
+            'wool_type' => 'required|string|max:255',
+            'weight_kg' => 'required|numeric|min:0',
+            'status' => 'required|string|in:received,processing,completed,rejected',
+            'arrival_date' => 'required|date',
+            'notes' => 'nullable|string',
         ]);
     
         Batch::create($validated);
@@ -49,7 +64,21 @@ class BatchController extends Controller
      */
     public function show(Batch $batch)
     {
-        return Inertia::render('Batches/Show', ['batch' => $batch]);
+        $batch->load([
+            'farm:id,name,location',
+            'stageRecords' => function ($query) {
+                $query->orderBy('created_at', 'desc')
+                    ->select([
+                        'id',
+                        'batch_id',
+                        'stage',
+                        'notes',
+                        'created_at',
+                        'completed_at'
+                    ]);
+            }
+        ]);
+        return Inertia::render('batches/show', ['batch' => $batch]);
     }
 
     /**
@@ -57,8 +86,8 @@ class BatchController extends Controller
      */
     public function edit(Batch $batch)
     {
-        $farms = Farm::all();
-        return Inertia::render('Batches/Edit', ['batch' => $batch, 'farms' => $farms]);
+        $farms = Farm::select(['id', 'name'])->orderBy('name')->get();
+        return Inertia::render('batches/edit', ['batch' => $batch, 'farms' => $farms]);
     }
 
     /**
@@ -67,10 +96,12 @@ class BatchController extends Controller
     public function update(Request $request, Batch $batch)
     {
         $validated = $request->validate([
-            'farm_id'      => 'required|exists:farms,id',
-            'batch_number' => 'required|string|max:255',
-            'start_date'   => 'required|date',
-            'end_date'     => 'nullable|date',
+            'farm_id' => 'required|exists:farms,id',
+            'wool_type' => 'required|string|max:255',
+            'weight_kg' => 'required|numeric|min:0',
+            'status' => 'required|string|in:received,processing,completed,rejected',
+            'arrival_date' => 'required|date',
+            'notes' => 'nullable|string',
         ]);
     
         $batch->update($validated);

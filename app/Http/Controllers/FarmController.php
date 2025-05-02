@@ -13,8 +13,16 @@ class FarmController extends Controller
      */
     public function index()
     {
-        $farms = Farm::all();
-        return Inertia::render('Farms/Index', ['farms' => $farms]);
+        $farms = Farm::query()
+            ->withCount('batches')
+            ->withSum('batches', 'weight_kg')
+            ->with(['batches' => function ($query) {
+                $query->select('id', 'farm_id', 'status')
+                    ->where('status', '!=', 'completed');
+            }])
+            ->get();
+
+        return Inertia::render('farms/index', ['farms' => $farms]);
     }
 
     /**
@@ -22,7 +30,7 @@ class FarmController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Farms/Create');
+        return Inertia::render('farms/create');
     }
 
     /**
@@ -40,7 +48,13 @@ class FarmController extends Controller
      */
     public function show(Farm $farm)
     {
-        return Inertia::render('Farms/Show', ['farm' => $farm]);
+        $farm->load([
+            'batches' => function ($query) {
+                $query->with('stageRecords')
+                    ->latest();
+            }
+        ]);
+        return Inertia::render('farms/show', ['farm' => $farm]);
     }
 
     /**
@@ -48,7 +62,7 @@ class FarmController extends Controller
      */
     public function edit(Farm $farm)
     {
-        return Inertia::render('Farms/Edit', ['farm' => $farm]);
+        return Inertia::render('farms/edit', ['farm' => $farm]);
     }
 
     /**

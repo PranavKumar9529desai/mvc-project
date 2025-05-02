@@ -14,7 +14,18 @@ class StageRecordController extends Controller
      */
     public function index()
     {
-        $stageRecords = StageRecord::with('batch')->get();
+        $stageRecords = StageRecord::query()
+            ->with(['batch:id,farm_id,wool_type', 'batch.farm:id,name'])
+            ->select([
+                'id',
+                'batch_id',
+                'stage',
+                'notes',
+                'created_at',
+                'completed_at'
+            ])
+            ->latest()
+            ->get();
         return Inertia::render('StageRecords/Index', ['stageRecords' => $stageRecords]);
     }
 
@@ -23,8 +34,8 @@ class StageRecordController extends Controller
      */
     public function create()
     {
-        $batches = Batch::all();
-        return Inertia::render('StageRecords/Create', ['batches' => $batches]);
+        $batch = Batch::findOrFail($request->batch_id);
+        return Inertia::render('stage-records/create', ['batch' => $request->batch]);
     }
 
     /**
@@ -34,13 +45,15 @@ class StageRecordController extends Controller
     {
         $validated = $request->validate([
             'batch_id' => 'required|exists:batches,id',
-            'stage'    => 'required|string|max:255',
-            'notes'    => 'nullable|string',
+            'stage' => 'required|string|in:cleaning,sorting,scouring,drying,quality_check,packaging',
+            'notes' => 'nullable|string',
+            'completed_at' => 'nullable|date',
         ]);
     
         StageRecord::create($validated);
     
-        return redirect()->route('stage-records.index')->with('success', 'Stage record created successfully.');
+        $batch = Batch::find($validated['batch_id']);
+        return redirect()->route('batches.show', $batch)->with('success', 'Stage record created successfully.');
     }
 
     /**
@@ -56,8 +69,13 @@ class StageRecordController extends Controller
      */
     public function edit(StageRecord $stageRecord)
     {
-        $batches = Batch::all();
-        return Inertia::render('StageRecords/Edit', ['stageRecord' => $stageRecord, 'batches' => $batches]);
+        $stageRecord->load([
+            'batch' => function ($query) {
+                $query->select(['id', 'farm_id', 'wool_type'])
+                    ->with('farm:id,name');
+            }
+        ]);
+        return Inertia::render('stage-records/edit', ['stageRecord' => $stageRecord]);
     }
 
     /**
@@ -66,14 +84,14 @@ class StageRecordController extends Controller
     public function update(Request $request, StageRecord $stageRecord)
     {
         $validated = $request->validate([
-            'batch_id' => 'required|exists:batches,id',
-            'stage'    => 'required|string|max:255',
-            'notes'    => 'nullable|string',
+            'stage' => 'required|string|in:cleaning,sorting,scouring,drying,quality_check,packaging',
+            'notes' => 'nullable|string',
+            'completed_at' => 'nullable|date',
         ]);
     
         $stageRecord->update($validated);
     
-        return redirect()->route('stage-records.index')->with('success', 'Stage record updated successfully.');
+        return redirect()->route('batches.show', $stageRecord->batch_id)->with('success', 'Stage record updated successfully.');
     }
 
     /**
@@ -83,6 +101,7 @@ class StageRecordController extends Controller
     {
         $stageRecord->delete();
     
-        return redirect()->route('stage-records.index')->with('success', 'Stage record deleted successfully.');
+        return redirect()->route('batches.show', $stageRecord->batch_id)
+            ->with('success', 'Stage record deleted successfully.');
     }
 }
