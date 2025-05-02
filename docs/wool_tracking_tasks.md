@@ -11,12 +11,12 @@
 - [x] Task 1.8: Create factories for testing
 
 ## 2. Backend Implementation
-- [ ] Task 2.1: Create FarmController with CRUD operations
-- [ ] Task 2.2: Create BatchController with CRUD operations
-- [ ] Task 2.3: Create StageRecordController with CRUD operations
-- [ ] Task 2.4: Set up routes in web.php
-- [ ] Task 2.5: Create form requests for validation
-- [ ] Task 2.6: Implement authentication middleware for routes
+- [x] Task 2.1: Create FarmController with CRUD operations
+- [x] Task 2.2: Create BatchController with CRUD operations
+- [x] Task 2.3: Create StageRecordController with CRUD operations
+- [x] Task 2.4: Set up routes in web.php
+- [x] Task 2.5: Create form requests for validation
+- [x] Task 2.6: Implement authentication middleware for routes
 
 ## 3. Frontend Implementation
 - [ ] Task 3.1: Create farms index page

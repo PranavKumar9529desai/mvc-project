@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class FarmController extends Controller
@@ -12,7 +13,8 @@ class FarmController extends Controller
      */
     public function index()
     {
-        //
+        $farms = Farm::all();
+        return Inertia::render('Farms/Index', ['farms' => $farms]);
     }
 
     /**
@@ -20,15 +22,17 @@ class FarmController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Farms/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FarmRequest $request)
     {
-        //
+        Farm::create($request->validated());
+    
+        return redirect()->route('farms.index')->with('success', 'Farm created successfully.');
     }
 
     /**
@@ -36,7 +40,7 @@ class FarmController extends Controller
      */
     public function show(Farm $farm)
     {
-        //
+        return Inertia::render('Farms/Show', ['farm' => $farm]);
     }
 
     /**
@@ -44,15 +48,17 @@ class FarmController extends Controller
      */
     public function edit(Farm $farm)
     {
-        //
+        return Inertia::render('Farms/Edit', ['farm' => $farm]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Farm $farm)
+    public function update(FarmRequest $request, Farm $farm)
     {
-        //
+        $farm->update($request->validated());
+    
+        return redirect()->route('farms.index')->with('success', 'Farm updated successfully.');
     }
 
     /**
@@ -60,6 +66,8 @@ class FarmController extends Controller
      */
     public function destroy(Farm $farm)
     {
-        //
+        $farm->delete();
+    
+        return redirect()->route('farms.index')->with('success', 'Farm deleted successfully.');
     }
 }
