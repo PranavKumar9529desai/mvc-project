@@ -7,7 +7,7 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\StageRecordController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('index');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
