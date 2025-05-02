@@ -46,4 +46,4 @@
 ## 6. Deployment Preparation
 - [ ] Task 6.1: Set up environment variables
 - [ ] Task 6.2: Create database migration script
-- [ ] Task 6.3: Prepare demo data for presentation
+- [ ] Task 6.3: Prepare demo data for presentation 
