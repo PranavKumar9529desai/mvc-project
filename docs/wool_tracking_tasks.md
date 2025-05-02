@@ -2,13 +2,13 @@
 
 ## 1. Database Setup
 - [x] Task 1.1: Create migration for `farms` table
-- [ ] Task 1.2: Create migration for `batches` table
-- [ ] Task 1.3: Create migration for `stage_records` table
-- [ ] Task 1.4: Create Farm model with relationships
-- [ ] Task 1.5: Create Batch model with relationships
-- [ ] Task 1.6: Create StageRecord model with relationships
-- [ ] Task 1.7: Create database seeders for demo data
-- [ ] Task 1.8: Create factories for testing
+- [x] Task 1.2: Create migration for `batches` table
+- [x] Task 1.3: Create migration for `stage_records` table
+- [x] Task 1.4: Create Farm model with relationships
+- [x] Task 1.5: Create Batch model with relationships
+- [x] Task 1.6: Create StageRecord model with relationships
+- [x] Task 1.7: Create database seeders for demo data
+- [x] Task 1.8: Create factories for testing
 
 ## 2. Backend Implementation
 - [ ] Task 2.1: Create FarmController with CRUD operations
